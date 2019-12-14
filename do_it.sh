@@ -1,6 +1,6 @@
 #! /bin/bash
 
-rm -Rf zbar/
+# rm -Rf zbar/
 git clone https://salsa.debian.org/debian/zbar
 cd zbar/
 git checkout 5eab87f59794453d27cfe2116cfb5aff5126aaa4
