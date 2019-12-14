@@ -5,7 +5,8 @@ git clone https://salsa.debian.org/debian/zbar
 cd zbar/
 git checkout 5eab87f59794453d27cfe2116cfb5aff5126aaa4
 
-cp -v ../fb.c ./zbar/window/
+cp -v ../fb.c ./zbar/window/fb.c
+cp -v ../pro_fb.c ./zbar/processor/fb.c
 cp -v ../Makefile.am.inc ./zbar/
 
 autoreconf -v --install -f
