@@ -73,7 +73,7 @@ if HAVE_JPEG
 zbar_libzbar_la_SOURCES += zbar/jpeg.c
 endif
 
-zbar_libzbar_la_SOURCES += zbar/processor/null.c zbar/window/fb.c
+zbar_libzbar_la_SOURCES += zbar/processor/fb.c zbar/window/fb.c
 
 if HAVE_DBUS
 zbar_libzbar_la_LDFLAGS += $(DBUS_LIBS)

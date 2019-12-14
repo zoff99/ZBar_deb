@@ -41,13 +41,6 @@ struct fb_fix_screeninfo var_framebuffer_fix_info;
 size_t framebuffer_screensize = 0;
 unsigned char *framebuffer_mappedmem = NULL;
 
-static inline int null_error (void *m,
-                              const char *func)
-{
-    //return(err_capture(m, SEV_ERROR, ZBAR_ERR_UNSUPPORTED, func,
-    //                   "not compiled with output window support"));
-    return(0);
-}
 
 void fb_fill_black()
 {
@@ -61,6 +54,7 @@ int _zbar_window_attach (zbar_window_t *w,
                          void *display,
                          unsigned long win)
 {
+    zprintf(1, "%s\n", __func__);
     return(0);
 }
 
@@ -70,22 +64,26 @@ int _zbar_window_expose (zbar_window_t *w,
                          int width,
                          int height)
 {
+    zprintf(1, "%s\n", __func__);
     return(0);
 }
 
 int _zbar_window_resize (zbar_window_t *w)
 {
+    zprintf(1, "%s\n", __func__);
     return(0);
 }
 
 int _zbar_window_clear (zbar_window_t *w)
 {
+    zprintf(1, "%s\n", __func__);
     fb_fill_black();
     return(0);
 }
 
 int _zbar_window_begin (zbar_window_t *w)
 {
+    zprintf(1, "%s\n", __func__);
     global_framebuffer_device_fd = open(framebuffer_device, O_RDWR);
 
     if (ioctl(global_framebuffer_device_fd, FBIOGET_VSCREENINFO, &var_framebuffer_info))
@@ -121,6 +119,7 @@ int _zbar_window_begin (zbar_window_t *w)
 
 int _zbar_window_end (zbar_window_t *w)
 {
+    zprintf(1, "%s\n", __func__);
     if (framebuffer_mappedmem != NULL)
     {
         munmap(framebuffer_mappedmem, (size_t)framebuffer_screensize);
@@ -140,7 +139,8 @@ int _zbar_window_draw_marker (zbar_window_t *w,
                               uint32_t rgb,
                               point_t p)
 {
-    return(null_error(w, __func__));
+    zprintf(1, "%s\n", __func__);
+    return(0);
 }
 
 int _zbar_window_draw_polygon (zbar_window_t *w,
@@ -148,7 +148,8 @@ int _zbar_window_draw_polygon (zbar_window_t *w,
                                const point_t *pts,
                                int npts)
 {
-    return(null_error(w, __func__));
+    zprintf(1, "%s\n", __func__);
+    return(0);
 }
 
 int _zbar_window_draw_text (zbar_window_t *w,
@@ -156,7 +157,8 @@ int _zbar_window_draw_text (zbar_window_t *w,
                             point_t p,
                             const char *text)
 {
-    return(null_error(w, __func__));
+    zprintf(1, "%s\n", __func__);
+    return(0);
 }
 
 int _zbar_window_fill_rect (zbar_window_t *w,
@@ -164,10 +166,12 @@ int _zbar_window_fill_rect (zbar_window_t *w,
                             point_t org,
                             point_t size)
 {
-    return(null_error(w, __func__));
+    zprintf(1, "%s\n", __func__);
+    return(0);
 }
 
 int _zbar_window_draw_logo (zbar_window_t *w)
 {
-    return(null_error(w, __func__));
+    zprintf(1, "%s\n", __func__);
+    return(0);
 }
