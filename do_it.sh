@@ -3,7 +3,7 @@
 rm -Rf zbar/
 git clone https://salsa.debian.org/debian/zbar
 cd zbar/
-git checkout 5eab87f59794453d27cfe2116cfb5aff5126aaa4
+git checkout 5eab87f59794453d27cfe2116cfb5aff5126aaa4 # correct version for "buster"
 
 cp -v ../fb.c ./zbar/window/fb.c
 cp -v ../pro_fb.c ./zbar/processor/fb.c
@@ -15,9 +15,9 @@ autoreconf -v --install -f
   --enable-doc=no --without-python2 \
   --enable-codes=ean,databar,code128,code93,code39,codabar,i25,qrcode
 
-make V=1 -j $(nproc)
+make V=1 -j $(nproc) || exit 1
 
-gcc -Wall -Wno-parentheses -g -O2 -o zbarcam/.libs/zbarcam zbarcam/zbarcam.o zbar/.libs/libzbar.a -lv4l2 -ljpeg -lpthread
+gcc -Wall -Wno-parentheses -g -O2 -o zbarcam/.libs/zbarcam zbarcam/zbarcam.o zbar/.libs/libzbar.a -lv4l2 -ljpeg -lpthread || exit 1
 
 ls -al ./zbar/.libs/libzbar.so
 ldd ./zbar/.libs/libzbar.so
@@ -27,4 +27,4 @@ ls -hal ./zbarcam/.libs/zbarcam
 ldd ./zbarcam/.libs/zbarcam
 
 # now use our custom binary systemwide
-sudp cp -av ./zbarcam/.libs/zbarcam /usr/bin/zbarcam
+sudp cp -av ./zbarcam/.libs/zbarcam /usr/bin/zbarcam || exit 1
