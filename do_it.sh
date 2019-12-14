@@ -27,4 +27,4 @@ ls -hal ./zbarcam/.libs/zbarcam
 ldd ./zbarcam/.libs/zbarcam
 
 # now use our custom binary systemwide
-sudp cp -av ./zbarcam/.libs/zbarcam /usr/bin/zbarcam || exit 1
+sudo cp -av ./zbarcam/.libs/zbarcam /usr/bin/zbarcam || exit 1
