@@ -32,6 +32,7 @@
 #include <string.h>
 #include <linux/fb.h>
 
+#include "window.h"
 #include "processor.h"
 
 int global_framebuffer_device_fd = 0;
@@ -56,6 +57,7 @@ void fb_fill_xxx()
         memset(framebuffer_mappedmem, 0xa3, framebuffer_screensize);
     }
 }
+
 
 int _zbar_processor_open (zbar_processor_t *proc,
                           char *name,
