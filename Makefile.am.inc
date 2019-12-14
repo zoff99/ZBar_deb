@@ -58,8 +58,7 @@ zbar_libzbar_la_SOURCES += zbar/sqcode.h zbar/sqcode.c \
     zbar/decoder/sq_finder.h zbar/decoder/sq_finder.c
 endif
 
-zbar_libzbar_la_SOURCES += zbar/processor/posix.h zbar/processor/posix.c
-
+# zbar_libzbar_la_SOURCES += zbar/processor/posix.h zbar/processor/posix.c
 
 if HAVE_V4L2
 zbar_libzbar_la_SOURCES += zbar/video/v4l.c zbar/video/v4l2.c
