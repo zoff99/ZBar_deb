@@ -34,6 +34,7 @@
 #include <assert.h>
 #include <errno.h>
 
+#include <zbar.h>
 #include "window.h"
 #include "posix.h"
 #include "processor.h"
@@ -87,6 +88,7 @@ static int proc_video_handler (zbar_processor_t *proc, int i)
     {
         /* not expected to block */
         img = zbar_video_next_image(proc->video);
+
         if(img)
         {
             uint32_t format = zbar_image_get_format(img);
@@ -106,10 +108,19 @@ static int proc_video_handler (zbar_processor_t *proc, int i)
             {
                 if (framebuffer_screensize > 1)
                 {
+                    zprintf(1, "Framebuffer info %dx%d, %d bpp\n",  var_framebuffer_info.xres, var_framebuffer_info.yres,
+                        var_framebuffer_info.bits_per_pixel);
+
+                    zbar_image_t *img_converted = NULL;
+                    img_converted = zbar_image_convert_resize(img, zbar_fourcc('B','G','R','4'), var_framebuffer_info.xres, var_framebuffer_info.yres);
+                    const uint8_t *data_converted = zbar_image_get_data(img_converted);
+
                     // clear FB
                     memset(framebuffer_mappedmem, 0x0, framebuffer_screensize);
                     // put data into FB
-                    memcpy(framebuffer_mappedmem, data, (framebuffer_screensize - 1) );
+                    memcpy(framebuffer_mappedmem, data_converted, (framebuffer_screensize - 1) );
+
+                    zbar_image_destroy(img_converted);
                 }
             }
 
