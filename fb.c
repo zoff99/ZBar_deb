@@ -21,34 +21,7 @@
  *  http://sourceforge.net/projects/zbar
  *------------------------------------------------------------------------*/
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <unistd.h>
-#include <fcntl.h>
-#include <sys/ioctl.h>
-#include <sys/mman.h>
-#include <sys/types.h>
-#include <sys/stat.h>
-#include <string.h>
-#include <linux/fb.h>
-
 #include "window.h"
-
-int global_framebuffer_device_fd = 0;
-const char *framebuffer_device = "/dev/fb0";
-struct fb_var_screeninfo var_framebuffer_info;
-struct fb_fix_screeninfo var_framebuffer_fix_info;
-size_t framebuffer_screensize = 0;
-unsigned char *framebuffer_mappedmem = NULL;
-
-
-void fb_fill_black()
-{
-    if (framebuffer_mappedmem != NULL)
-    {
-        memset(framebuffer_mappedmem, 0x0, framebuffer_screensize);
-    }
-}
 
 int _zbar_window_attach (zbar_window_t *w,
                          void *display,
@@ -77,61 +50,18 @@ int _zbar_window_resize (zbar_window_t *w)
 int _zbar_window_clear (zbar_window_t *w)
 {
     zprintf(1, "%s\n", __func__);
-    fb_fill_black();
     return(0);
 }
 
 int _zbar_window_begin (zbar_window_t *w)
 {
     zprintf(1, "%s\n", __func__);
-    global_framebuffer_device_fd = open(framebuffer_device, O_RDWR);
-
-    if (ioctl(global_framebuffer_device_fd, FBIOGET_VSCREENINFO, &var_framebuffer_info))
-    {
-        // ERROR
-    }
-
-    if (ioctl(global_framebuffer_device_fd, FBIOGET_FSCREENINFO, &var_framebuffer_fix_info))
-    {
-        // ERROR
-    }
-
-    // map framebuffer to user memory
-    framebuffer_screensize = (size_t)var_framebuffer_fix_info.smem_len;
-    framebuffer_mappedmem = NULL;
-    framebuffer_mappedmem = (unsigned char *)mmap(NULL,
-                                            (size_t)framebuffer_screensize,
-                                            PROT_READ | PROT_WRITE,
-                                            MAP_SHARED,
-                                            global_framebuffer_device_fd, 0);
-
-    if (framebuffer_mappedmem == NULL)
-    {
-        // dbg(0, "Failed to mmap Framebuffer\n");
-    }
-    else
-    {
-        // dbg(2, "mmap Framebuffer: %p\n", framebuffer_mappedmem);
-    }
-
     return(0);
 }
 
 int _zbar_window_end (zbar_window_t *w)
 {
     zprintf(1, "%s\n", __func__);
-    if (framebuffer_mappedmem != NULL)
-    {
-        munmap(framebuffer_mappedmem, (size_t)framebuffer_screensize);
-        framebuffer_mappedmem = NULL;
-    }
-
-    if (global_framebuffer_device_fd > 0)
-    {
-        close(global_framebuffer_device_fd);
-        global_framebuffer_device_fd = 0;
-    }
-
     return(0);
 }
 
