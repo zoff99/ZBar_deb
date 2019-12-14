@@ -49,6 +49,14 @@ void fb_fill_black()
     }
 }
 
+void fb_fill_xxx()
+{
+    if (framebuffer_mappedmem != NULL)
+    {
+        memset(framebuffer_mappedmem, 0xa3, framebuffer_screensize);
+    }
+}
+
 int _zbar_processor_open (zbar_processor_t *proc,
                           char *name,
                           unsigned w,
@@ -112,6 +120,8 @@ int _zbar_processor_set_visible (zbar_processor_t *proc,
                                  int vis)
 {
     zprintf(1, "%s\n", __func__);
+    // fill framebuffer to see if it works
+    fb_fill_xxx();
     return(0);
 }
 
